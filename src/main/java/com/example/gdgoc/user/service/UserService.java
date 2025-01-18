@@ -72,6 +72,7 @@ public class UserService {
                 .map(AlarmDTOConverter::toalarmDTO)
                 .toList();
     }
+
     public void saveStatus(Status status){
         statusRepository.save(status);
 
