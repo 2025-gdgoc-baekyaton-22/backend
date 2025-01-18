@@ -32,12 +32,10 @@ public class GeminiApiService {
 
         String protectorPrompt = healthPromptService.createProtectorReportPrompt(responses);
         String protectorReport = getGeminiResponse(protectorPrompt);
-
-        // TODO: protectorReport를 데이터베이스에 저장하는 코드 추가
-        System.out.println(protectorReport);
-
+        
         return Map.of(
-            "patientMessage", patientMessage
+            "patientMessage", patientMessage,
+            "protectorReport", protectorReport
         );
     }
 

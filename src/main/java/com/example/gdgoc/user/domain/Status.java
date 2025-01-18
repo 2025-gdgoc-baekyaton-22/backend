@@ -1,12 +1,7 @@
 package com.example.gdgoc.user.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,13 +39,18 @@ public class Status {
     private SurveyStatus memory; // 건망증, 치매 여부
     private SurveyStatus hospital; // 통원 여부
 
+    // 보호자에게 전달할 환자의 건강 보고서 (Gemini API)
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String protectorReport;
+
     public Status() {
     }
 
     @Builder
     public Status(Integer dayTime, SurveyStatus currentBodyStatus, SurveyStatus defecation, SurveyStatus feeling,
                   SurveyStatus communicate, SurveyStatus medication, SurveyStatus meal, SurveyStatus sleep,
-                  SurveyStatus memory, SurveyStatus hospital, Long userUrlId) {
+                  SurveyStatus memory, SurveyStatus hospital, Long userUrlId, String protectorReport) {
         this.dayTime = dayTime;
         this.userUrlId = userUrlId;
         this.surveyTime = LocalDateTime.now();
@@ -63,6 +63,7 @@ public class Status {
         this.sleep = sleep;
         this.memory = memory;
         this.hospital = hospital;
+        this.protectorReport = protectorReport;
     }
 
 

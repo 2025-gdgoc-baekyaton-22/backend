@@ -24,9 +24,11 @@ public class GeminiController {
         this.userService = userService;
     }
 
-
     @PostMapping("/process-survey")
     public Map<String, String> processSurvey(@RequestBody StatusRequestDTO dto) {
+        Map<String, String> response = SurveyDataConverter.convertSurveyData(dto);
+        Map<String, String> originalMap = geminiApiService.processSurvey(response);
+
         try {
             Status status = Status.builder()
                     .dayTime(dto.getDayTime())
@@ -40,6 +42,7 @@ public class GeminiController {
                     .hospital(SurveyStatus.fromValue(dto.getHospital()))
                     .medication(SurveyStatus.fromValue(dto.getMedication()))
                     .memory(SurveyStatus.fromValue(dto.getMemory()))
+                    .protectorReport(originalMap.get("protectorReport"))
                     .build();
             status.setUser(userService.findUserById(dto.getUserUrlId()));
             userService.saveStatus(status);
@@ -48,8 +51,9 @@ public class GeminiController {
             throw e;
         }
 
-        Map<String, String> response = SurveyDataConverter.convertSurveyData(dto);
-        return geminiApiService.processSurvey(response);
+        return Map.of(
+            "patientMessage", originalMap.get("patientMessage")
+        );
     }
 
     @PostMapping(value = "/generate", produces = MediaType.APPLICATION_JSON_VALUE)

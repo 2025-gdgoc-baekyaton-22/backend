@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SurveyDataConverter {
+
     private static final Map<Integer, String> QUESTION_MAP = Map.of(
             1, "현재 몸 상태가 어떠신가요?",
             2, "오늘 기분이 어떠세요? 우울하거나 불안하진 않으신가요?",
@@ -14,7 +15,8 @@ public class SurveyDataConverter {
             5, "식사는 잘 하셨나요?",
             6, "복용 중인 약이 있다면 빠뜨리지 않고 잘 드시고 계세요?",
             7, "오늘 병원에 다녀오셨나요?",
-            8, "오늘 깜빡깜빡하거나, 길을 잃거나, 날짜를 헷갈리신 적이 있나요?"
+            8, "오늘 깜빡깜빡하거나, 길을 잃거나, 날짜를 헷갈리신 적이 있나요?",
+            9, "배변 상태는 어떠신가요?"
     );
 
     private static final Map<Integer, Function<StatusRequestDTO, Integer>> FIELD_MAPPINGS = Map.of(
@@ -25,7 +27,8 @@ public class SurveyDataConverter {
             5, StatusRequestDTO::getMeal,
             6, StatusRequestDTO::getMedication,
             7, StatusRequestDTO::getHospital,
-            8, StatusRequestDTO::getMemory
+            8, StatusRequestDTO::getMemory,
+            9, StatusRequestDTO::getDefecation
     );
 
     private static final Map<Integer, SurveyResponseType> RESPONSE_TYPES = Map.of(
@@ -36,14 +39,18 @@ public class SurveyDataConverter {
             5, SurveyResponseType.YES_NO,
             6, SurveyResponseType.BODY_STATUS,
             7, SurveyResponseType.YES_NO,
-            8, SurveyResponseType.BODY_STATUS
+            8, SurveyResponseType.BODY_STATUS,
+            9, SurveyResponseType.BODY_STATUS
     );
 
     public static Map<String, String> convertSurveyData(StatusRequestDTO dto) {
         return FIELD_MAPPINGS.entrySet().stream()
-                .collect(Collectors.toMap(
-                        entry -> QUESTION_MAP.get(entry.getKey()), // 질문 문자열
-                        entry -> RESPONSE_TYPES.get(entry.getKey()).getResponse(entry.getValue().apply(dto))
-                ));
+            .collect(Collectors.toMap(
+                entry -> QUESTION_MAP.get(entry.getKey()),
+                entry -> {
+                    Integer value = entry.getValue().apply(dto);
+                    return RESPONSE_TYPES.get(entry.getKey()).getResponse(value);
+                }
+            ));
     }
 }
