@@ -1,7 +1,9 @@
 package com.example.gdgoc.user.service;
 
 import com.example.gdgoc.user.domain.Caregiver;
+import com.example.gdgoc.user.domain.Status;
 import com.example.gdgoc.user.domain.User;
+import com.example.gdgoc.user.repository.StatusRepository;
 import com.example.gdgoc.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final StatusRepository statusRepository;
 
     private User currentUser;
 
@@ -59,5 +62,9 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public void saveStatus(Status status){
+        statusRepository.save(status);
     }
 }
