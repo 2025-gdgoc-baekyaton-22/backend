@@ -2,11 +2,7 @@ package com.example.gdgoc.user.controller;
 
 import com.example.gdgoc.user.domain.Caregiver;
 import com.example.gdgoc.user.domain.User;
-import com.example.gdgoc.user.dto.CareGiverDTO;
-import com.example.gdgoc.user.dto.IsSuccessDTO;
-import com.example.gdgoc.user.dto.SignInRequestDTO;
-import com.example.gdgoc.user.dto.SignUpRequestDTO;
-import com.example.gdgoc.user.dto.StartPageResponseDTO;
+import com.example.gdgoc.user.dto.*;
 import com.example.gdgoc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,5 +60,30 @@ public class UserController {
                 .name(name)
                 .build();
         return ResponseEntity.ok(startPageResponseDTO);
+    }
+
+    @GetMapping("/info")
+    public DashBoardRespondDTO dashboard(){
+        User user = userService.getCurrentUser();
+        DashBoardRespondDTO dashBoardRespondDTO = new DashBoardRespondDTO();
+        dashBoardRespondDTO.setCareTakerName(user.getCareTakerName());
+        dashBoardRespondDTO.setCareTakerAge(user.getCareTakerAge());
+        System.out.println(user.getStatusList().size());
+
+        LocalDateTime localDateTime = user.getStatusList().get(user.getStatusList().size()-1).getSurveyTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedDate = localDateTime.format(formatter);
+        dashBoardRespondDTO.setLatestUpdate(formattedDate);
+
+        String report = user.getStatusList().get(user.getStatusList().size()-1).getProtectorReport();
+        String cleanedReport = report.replace("\n", "").replace("*", "");
+        dashBoardRespondDTO.setSignificant(cleanedReport);
+
+        for(Caregiver caregiver: user.getCareGiverList()){
+            CareGiverNameDTO careGiverNameDTO = new CareGiverNameDTO();
+            careGiverNameDTO.setCareGiverName(caregiver.getCareGiverName());
+            dashBoardRespondDTO.getCareGivers().add(careGiverNameDTO);
+        }
+        return dashBoardRespondDTO;
     }
 }

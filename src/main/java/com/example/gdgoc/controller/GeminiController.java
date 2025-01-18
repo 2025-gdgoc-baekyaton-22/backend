@@ -3,6 +3,7 @@ package com.example.gdgoc.controller;
 import com.example.gdgoc.service.GeminiApiService;
 import com.example.gdgoc.user.domain.Status;
 import com.example.gdgoc.user.domain.SurveyStatus;
+import com.example.gdgoc.user.domain.User;
 import com.example.gdgoc.user.dto.IsSuccessDTO;
 import com.example.gdgoc.user.dto.StatusRequestDTO;
 import com.example.gdgoc.user.service.UserService;
@@ -44,8 +45,10 @@ public class GeminiController {
                     .memory(SurveyStatus.fromValue(dto.getMemory()))
                     .protectorReport(originalMap.get("protectorReport"))
                     .build();
-            status.setUser(userService.findUserById(dto.getUserUrlId()));
+            User user = userService.findUserById(dto.getUserUrlId());
+            status.setUser(user);
             userService.saveStatus(status);
+            userService.setCurrentUser(user);
         }
         catch(Exception e){
             throw e;
