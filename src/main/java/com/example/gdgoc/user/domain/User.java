@@ -3,41 +3,53 @@ package com.example.gdgoc.user.domain;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-
+import lombok.Setter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private String userName;
     private String passWord;
-    private String caregiver_phone;
-    private String caretaker_phone;
+    private String careTakerPhone;
+    private String careTakerName;
+    private String careTakerAge;
+    private String careTakerAddress;
+
+
+    @ElementCollection
+    @CollectionTable(name = "user_caregiver", joinColumns = @JoinColumn(name = "user_id"))
+    private List<Caregiver> careGiverList = new ArrayList<>();
+
+    private LocalDateTime latestUpdateTime;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Status> statusList = new ArrayList<>();
 
+    private Boolean threeOrTwo; // true : 하루 3회 / false : 하루 2회
+
     public User(){}
 
     @Builder
-    public User(String userName, String passWord, String caregiver_phone, String caretaker_phone) {
-        this.userName = userName;
+    public User(String careTakerPhone, String careTakerName, String careTakerAge, String careTakerAddress, String passWord, Boolean threeOrTwo) {
+        this.careTakerPhone = careTakerPhone;
+        this.careTakerName = careTakerName;
+        this.careTakerAge = careTakerAge;
+        this.careTakerAddress = careTakerAddress;
         this.passWord = passWord;
-        this.caregiver_phone = caregiver_phone;
-        this.caretaker_phone = caretaker_phone;
+        this.threeOrTwo = threeOrTwo;
     }
 
-    public static User signUpUser(String userName, String passWord, String caregiver_phone, String caretaker_phone){
-        return User.builder()
-                .userName(userName)
-                .passWord(passWord)
-                .caregiver_phone(caregiver_phone)
-                .caretaker_phone(caretaker_phone)
-                .build();
+    public void addCareGiver(Caregiver caregiver){
+        this.careGiverList.add(caregiver);
+    }
+
+    public void addStatus(Status status){
+        this.statusList.add(status);
     }
 }

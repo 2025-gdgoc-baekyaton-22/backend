@@ -1,11 +1,13 @@
 package com.example.gdgoc.user.service;
 
+import com.example.gdgoc.user.domain.Caregiver;
 import com.example.gdgoc.user.domain.User;
 import com.example.gdgoc.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,26 +26,32 @@ public class UserService {
     }
 
     @Transactional
-    public Long saveUser(User user){
-        validateDuplicateUser(user);
-        userRepository.save(user);
-        return user.getId();
+    public Boolean saveUser(User user){
+        if(validateDuplicateUser(user)) {
+            userRepository.save(user);
+            return true;
+        }
+        else
+            return false;
     }
 
     @Transactional
     public Long updateUser(User user){
+        user.setLatestUpdateTime(LocalDateTime.now());
         userRepository.save(user);
         return user.getId();
     }
 
-    private void validateDuplicateUser(User user) {
-        List<User> findUsers = userRepository.findByUserName(user.getUserName());
+    private Boolean validateDuplicateUser(User user) {
+        List<User> findUsers = userRepository.findByCareTakerPhone(user.getCareTakerPhone());
         if(!findUsers.isEmpty())
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            return false;
+        else
+            return true;
     }
 
-    public boolean logIn(String userName, String passWord){
-        List<User> findUser = userRepository.findByUserName(userName);
+    public boolean signIn(String careTakerPhone, String passWord){
+        List<User> findUser = userRepository.findByCareTakerPhone(careTakerPhone);
         if(!findUser.isEmpty()){
             if (findUser.get(0).getPassWord().equals(passWord)){
                 setCurrentUser(findUser.get(0));
