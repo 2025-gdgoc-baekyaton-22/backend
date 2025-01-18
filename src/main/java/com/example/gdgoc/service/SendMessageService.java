@@ -31,6 +31,16 @@ public class SendMessageService {
         this.userService = userService;
     }
 
+    @Scheduled(cron = "0 */10 * * * *")
+    public void sendMessage() {
+        userService.findAllUserData().stream()
+                .filter(data -> !data.isThreeOrTwo())
+                .forEach(data -> {
+                    String text = String.format("http://dollbomzigi.store/survey-index/%d/1 로 접속하세요!", data.getId());
+                    sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                });
+    }
+
     // 2번 보내야 되는 로직
 //    @Scheduled(cron = "0 57 4 * * *", zone = "Asia/Seoul")
     @Scheduled(cron = "0 0 8,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 20:00에 실행
@@ -43,10 +53,12 @@ public class SendMessageService {
                 .filter(data -> !data.isThreeOrTwo())
                 .forEach(data -> {
                     if (isMorning) {
-                        String text = String.format("http://dollbomzigi.store/%d/1 로 접속하세요!", data.getId());
+                        String text = String.format("http://dollbomzigi.store/survey-index/%d/1 로 접속하세요!",
+                                data.getId());
                         sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
                     } else if (isEvening) {
-                        String text = String.format("http://dollbomzigi.store/%d/3 로 접속하세요!", data.getId());
+                        String text = String.format("http://dollbomzigi.store/survey-index/%d/3 로 접속하세요!",
+                                data.getId());
                         sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
                     }
                 });
@@ -62,13 +74,16 @@ public class SendMessageService {
                 .filter(data -> !data.isThreeOrTwo()) // 3번 보내는 로직으로 필터링
                 .forEach(data -> {
                     if (hour == 8) {
-                        String text = String.format("http://dollbomzigi.store/%d/1 로 접속하세요!", data.getId());
+                        String text = String.format("http://dollbomzigi.store/survey-index/%d/1 로 접속하세요!",
+                                data.getId());
                         sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
                     } else if (hour == 14) {
-                        String text = String.format("http://dollbomzigi.store/%d/2 로 접속하세요!", data.getId());
+                        String text = String.format("http://dollbomzigi.store/survey-index/%d/2 로 접속하세요!",
+                                data.getId());
                         sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
                     } else if (hour == 20) {
-                        String text = String.format("http://dollbomzigi.store/%d/3 로 접속하세요!", data.getId());
+                        String text = String.format("http://dollbomzigi.store/survey-index/%d/3 로 접속하세요!",
+                                data.getId());
                         sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
                     }
                 });
