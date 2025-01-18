@@ -34,7 +34,7 @@ public class GeminiController {
                     .sleep(SurveyStatus.fromValue(dto.getSleep()))
                     .communicate(SurveyStatus.fromValue(dto.getCommunicate()))
                     .currentBodyStatus(SurveyStatus.fromValue(dto.getCurrentBodyStatus()))
-                    .defecation(SurveyStatus.fromValue(dto.getCurrentBodyStatus()))
+                    .defecation(SurveyStatus.fromValue(dto.getDefecation()))
                     .feeling(SurveyStatus.fromValue(dto.getFeeling()))
                     .hospital(SurveyStatus.fromValue(dto.getHospital()))
                     .medication(SurveyStatus.fromValue(dto.getMedication()))

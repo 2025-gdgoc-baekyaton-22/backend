@@ -17,4 +17,5 @@ public class StatusRequestDTO {
     private Integer medication;
     private Integer hospital;
     private Integer memory;
+    private Integer defecation;
 }

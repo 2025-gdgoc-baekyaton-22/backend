@@ -21,8 +21,7 @@ public class User {
     private String careTakerAge;
     private String careTakerAddress;
 
-    @ElementCollection
-    @CollectionTable(name = "user_caregiver", joinColumns = @JoinColumn(name = "user_id"))
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Caregiver> careGiverList = new ArrayList<>();
 
     private LocalDateTime latestUpdateTime;
@@ -46,6 +45,7 @@ public class User {
 
     public void addCareGiver(Caregiver caregiver){
         this.careGiverList.add(caregiver);
+        caregiver.setUser(this);
     }
 
     public void addStatus(Status status){
