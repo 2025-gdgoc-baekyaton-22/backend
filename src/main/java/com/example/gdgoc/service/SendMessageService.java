@@ -36,7 +36,8 @@ public class SendMessageService {
 //    @Scheduled(cron = "0 0 8,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 20:00에 실행
     public void send2Message() {
         System.out.println("하하");
-        String text = "http://dollbomzigi.store 로 접속하세요!";
+        Long userId = userService.getCurrentUser().getId();
+        String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", userId);
         userService.findAllUserData().stream()
                 .filter(data -> !data.isThreeOrTwo())
                 .forEach(data -> sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text));
@@ -45,7 +46,8 @@ public class SendMessageService {
     // 3번 보내야 되는 로직
     @Scheduled(cron = "0 0 8,14,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 14:00, 20:00에 실행
     public void send3Message() {
-        String text = "http://dollbomzigi.store 로 접속하세요!";
+        Long userId = userService.getCurrentUser().getId();
+        String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", userId);
         userService.findAllUserData().stream()
                 .filter(AlarmDTO::isThreeOrTwo)
                 .forEach(data -> sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text));
