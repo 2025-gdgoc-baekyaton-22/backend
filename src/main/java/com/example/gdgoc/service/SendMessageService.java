@@ -36,7 +36,7 @@ public class SendMessageService {
         userService.findAllUserData().stream()
                 .filter(data -> !data.isThreeOrTwo())
                 .forEach(data -> {
-                    String text = String.format("http://dollbomzigi.store/survey-index/%d/1 로 접속하세요!", data.getId());
+                    String text = String.format("http://dollbomzigi.store/survey-index 로 접속하세요!", data.getId());
                     sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
                 });
     }
