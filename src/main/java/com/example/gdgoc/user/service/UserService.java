@@ -1,11 +1,10 @@
 package com.example.gdgoc.user.service;
 
 import com.example.gdgoc.user.converter.AlarmDTOConverter;
-import com.example.gdgoc.user.domain.User;
-import com.example.gdgoc.user.dto.AlarmDTO;
-import com.example.gdgoc.user.domain.Caregiver;
 import com.example.gdgoc.user.domain.Status;
 import com.example.gdgoc.user.domain.User;
+import com.example.gdgoc.user.dto.AlarmDTO;
+import com.example.gdgoc.user.dto.StartPageResponseDTO;
 import com.example.gdgoc.user.repository.StatusRepository;
 import com.example.gdgoc.user.repository.UserRepository;
 import java.time.LocalDateTime;
@@ -73,7 +72,11 @@ public class UserService {
                 .toList();
     }
 
-    public void saveStatus(Status status){
+    public String findUserName(Long userId) {
+        return userRepository.findById(userId).get().getCareTakerName();
+    }
+
+    public void saveStatus(Status status) {
         statusRepository.save(status);
 
     }
