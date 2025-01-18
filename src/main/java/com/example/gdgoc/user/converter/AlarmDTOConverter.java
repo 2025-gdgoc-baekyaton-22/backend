@@ -7,6 +7,7 @@ public class AlarmDTOConverter {
 
     public static AlarmDTO toalarmDTO(User user) {
         return AlarmDTO.builder()
+                .id(user.getId())
                 .threeOrTwo(user.getThreeOrTwo())
                 .careTakerPhone(user.getCareTakerPhone())
                 .careGiverPhone(user.getCareGiverList().get(0).getCareGiverPhone())

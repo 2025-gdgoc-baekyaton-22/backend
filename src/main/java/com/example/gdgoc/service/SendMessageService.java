@@ -1,6 +1,5 @@
 package com.example.gdgoc.service;
 
-import com.example.gdgoc.user.dto.AlarmDTO;
 import com.example.gdgoc.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
@@ -36,21 +35,23 @@ public class SendMessageService {
 //    @Scheduled(cron = "0 0 8,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 20:00에 실행
     public void send2Message() {
         System.out.println("하하");
-        Long userId = userService.getCurrentUser().getId();
-        String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", userId);
         userService.findAllUserData().stream()
                 .filter(data -> !data.isThreeOrTwo())
-                .forEach(data -> sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text));
+                .forEach(data -> {
+                    String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", data.getId());
+                    sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                });
     }
 
     // 3번 보내야 되는 로직
     @Scheduled(cron = "0 0 8,14,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 14:00, 20:00에 실행
     public void send3Message() {
-        Long userId = userService.getCurrentUser().getId();
-        String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", userId);
         userService.findAllUserData().stream()
-                .filter(AlarmDTO::isThreeOrTwo)
-                .forEach(data -> sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text));
+                .filter(data -> !data.isThreeOrTwo())
+                .forEach(data -> {
+                    String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", data.getId());
+                    sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                });
     }
 
     public void sendMessage(String fromPhoneNumber, String toPhoneNumber, String text) {
