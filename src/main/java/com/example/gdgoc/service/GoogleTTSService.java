@@ -26,7 +26,7 @@ public class GoogleTTSService {
 
         input.put("text", text); // 여기가 텍스트 입력
         voice.put("languageCode", "ko-KR");
-        voice.put("name", "ko-KR-Neural2-A"); // 목소리 선택지 참고 : https://cloud.google.com/text-to-speech/docs/voices?hl=ko
+        voice.put("name", "ko-KR-Standard-B"); // 목소리 선택지 참고 : https://cloud.google.com/text-to-speech/docs/voices?hl=ko
         audioConfig.put("audioEncoding", "LINEAR16");
 
         requestBody.put("input", input);
