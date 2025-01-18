@@ -30,6 +30,7 @@ public class GeminiController {
         try {
             Status status = Status.builder()
                     .dayTime(dto.getDayTime())
+                    .userUrlId(dto.getUserUrlId())
                     .meal(SurveyStatus.fromValue(dto.getMeal()))
                     .sleep(SurveyStatus.fromValue(dto.getSleep()))
                     .communicate(SurveyStatus.fromValue(dto.getCommunicate()))
@@ -40,7 +41,7 @@ public class GeminiController {
                     .medication(SurveyStatus.fromValue(dto.getMedication()))
                     .memory(SurveyStatus.fromValue(dto.getMemory()))
                     .build();
-            status.setUser(userService.getCurrentUser());
+            status.setUser(userService.findUserById(dto.getUserUrlId()));
             userService.saveStatus(status);
         }
         catch(Exception e){

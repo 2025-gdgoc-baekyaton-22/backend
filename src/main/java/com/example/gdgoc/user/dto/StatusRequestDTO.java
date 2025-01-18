@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StatusRequestDTO {
     private Integer dayTime;
+    private Long userUrlId;
     private Integer currentBodyStatus;
     private Integer feeling;
     private Integer communicate;

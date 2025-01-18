@@ -80,4 +80,8 @@ public class UserService {
         statusRepository.save(status);
 
     }
+
+    public User findUserById(Long id){
+        return userRepository.findUserById(id);
+    }
 }
