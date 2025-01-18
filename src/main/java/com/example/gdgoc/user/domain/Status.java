@@ -30,6 +30,7 @@ public class Status {
 
     // 최근 업데이트 시간
     private LocalDateTime surveyTime;
+    private Long userUrlId;
 
     // 1: 네 2: 보통 3: 아니요
     // 4: 아주 괜찮아요 5: 그저 그래요 6: 아주 안좋아요
@@ -49,8 +50,9 @@ public class Status {
     @Builder
     public Status(Integer dayTime, SurveyStatus currentBodyStatus, SurveyStatus defecation, SurveyStatus feeling,
                   SurveyStatus communicate, SurveyStatus medication, SurveyStatus meal, SurveyStatus sleep,
-                  SurveyStatus memory, SurveyStatus hospital) {
+                  SurveyStatus memory, SurveyStatus hospital, Long userUrlId) {
         this.dayTime = dayTime;
+        this.userUrlId = userUrlId;
         this.surveyTime = LocalDateTime.now();
         this.currentBodyStatus = currentBodyStatus;
         this.defecation = defecation;
