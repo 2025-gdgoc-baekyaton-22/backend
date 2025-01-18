@@ -31,7 +31,7 @@ public class SendMessageService {
         this.userService = userService;
     }
 
-    @Scheduled(cron = "0 */10 * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void sendMessage() {
         userService.findAllUserData().stream()
                 .filter(data -> !data.isThreeOrTwo())
