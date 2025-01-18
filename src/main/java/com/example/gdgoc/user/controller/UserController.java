@@ -23,6 +23,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public IsSuccessDTO signUp(@RequestBody SignUpRequestDTO dto){
+        System.out.println(dto.getThreeOrTwo());
         User user = User.builder()
                 .careTakerName(dto.getCareTakerName())
                 .careTakerAge(dto.getCareTakerAge())

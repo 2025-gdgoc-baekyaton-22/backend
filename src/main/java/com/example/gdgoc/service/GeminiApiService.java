@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 public class GeminiApiService {
+
     @Autowired
     private GoogleApiKeyProvider apiKeyProvider;
 

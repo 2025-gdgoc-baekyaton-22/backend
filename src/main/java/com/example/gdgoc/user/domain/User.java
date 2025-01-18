@@ -21,7 +21,6 @@ public class User {
     private String careTakerAge;
     private String careTakerAddress;
 
-
     @ElementCollection
     @CollectionTable(name = "user_caregiver", joinColumns = @JoinColumn(name = "user_id"))
     private List<Caregiver> careGiverList = new ArrayList<>();
