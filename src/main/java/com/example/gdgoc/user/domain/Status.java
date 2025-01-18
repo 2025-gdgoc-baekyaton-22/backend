@@ -1,15 +1,22 @@
 package com.example.gdgoc.user.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Status {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -36,10 +43,13 @@ public class Status {
     private SurveyStatus memory; // 건망증, 치매 여부
     private SurveyStatus hospital; // 통원 여부
 
-    public Status(){}
+    public Status() {
+    }
 
     @Builder
-    public Status(Integer dayTime, SurveyStatus currentBodyStatus, SurveyStatus defecation, SurveyStatus feeling, SurveyStatus communicate, SurveyStatus medication, SurveyStatus meal, SurveyStatus sleep, SurveyStatus memory, SurveyStatus hospital) {
+    public Status(Integer dayTime, SurveyStatus currentBodyStatus, SurveyStatus defecation, SurveyStatus feeling,
+                  SurveyStatus communicate, SurveyStatus medication, SurveyStatus meal, SurveyStatus sleep,
+                  SurveyStatus memory, SurveyStatus hospital) {
         this.dayTime = dayTime;
         this.surveyTime = LocalDateTime.now();
         this.currentBodyStatus = currentBodyStatus;
@@ -54,7 +64,7 @@ public class Status {
     }
 
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
         user.addStatus(this);
     }

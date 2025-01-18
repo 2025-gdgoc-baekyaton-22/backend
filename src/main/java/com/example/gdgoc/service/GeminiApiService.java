@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Service
 public class GeminiApiService {
+
     @Autowired
     private GoogleApiKeyProvider apiKeyProvider;
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=";
