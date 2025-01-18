@@ -29,6 +29,7 @@ public class UserController {
                 .careTakerPhone(dto.getCareTakerPhone())
                 .careTakerAddress(dto.getCareTakerAddress())
                 .passWord(dto.getPassWord())
+                .threeOrTwo(dto.getThreeOrTwo())
                 .build();
         for (CareGiverDTO careGiverDTO : dto.getCareGiver()){
             Caregiver caregiver = Caregiver.builder()

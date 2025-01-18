@@ -31,15 +31,18 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Status> statusList = new ArrayList<>();
 
+    private Boolean threeOrTwo; // true : 하루 3회 / false : 하루 2회
+
     public User(){}
 
     @Builder
-    public User(String careTakerPhone, String careTakerName, String careTakerAge, String careTakerAddress, String passWord) {
+    public User(String careTakerPhone, String careTakerName, String careTakerAge, String careTakerAddress, String passWord, Boolean threeOrTwo) {
         this.careTakerPhone = careTakerPhone;
         this.careTakerName = careTakerName;
         this.careTakerAge = careTakerAge;
         this.careTakerAddress = careTakerAddress;
         this.passWord = passWord;
+        this.threeOrTwo = threeOrTwo;
     }
 
     public void addCareGiver(Caregiver caregiver){

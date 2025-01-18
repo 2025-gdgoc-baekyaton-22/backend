@@ -11,5 +11,6 @@ public class SignUpRequestDTO {
     private String careTakerPhone;
     private String careTakerAddress;
     private String passWord;
+    private Boolean threeOrTwo;
     private List<CareGiverDTO> careGiver;
 }
