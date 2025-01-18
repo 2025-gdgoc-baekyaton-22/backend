@@ -3,6 +3,10 @@ package com.example.gdgoc.user.service;
 import com.example.gdgoc.user.converter.AlarmDTOConverter;
 import com.example.gdgoc.user.domain.User;
 import com.example.gdgoc.user.dto.AlarmDTO;
+import com.example.gdgoc.user.domain.Caregiver;
+import com.example.gdgoc.user.domain.Status;
+import com.example.gdgoc.user.domain.User;
+import com.example.gdgoc.user.repository.StatusRepository;
 import com.example.gdgoc.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final StatusRepository statusRepository;
 
     private User currentUser;
 
@@ -66,5 +71,9 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(AlarmDTOConverter::toalarmDTO)
                 .toList();
+    }
+    public void saveStatus(Status status){
+        statusRepository.save(status);
+
     }
 }

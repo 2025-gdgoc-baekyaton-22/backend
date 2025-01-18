@@ -3,20 +3,43 @@ package com.example.gdgoc.service;
 import com.example.gdgoc.dto.GeminiRequestDto;
 import com.example.gdgoc.dto.GeminiResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.*;
-
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GeminiApiService {
 
     @Autowired
     private GoogleApiKeyProvider apiKeyProvider;
-
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=";
+    private final RestTemplate restTemplate;
+    private final HealthPromptService healthPromptService;
+
+    public GeminiApiService(RestTemplate restTemplate, HealthPromptService healthPromptService) {
+        this.restTemplate = restTemplate;
+        this.healthPromptService = healthPromptService;
+    }
+
+    public Map<String, String> processSurvey(Map<String, String> responses) {
+        String patientPrompt = healthPromptService.createPatientMessagePrompt(responses);
+        String patientMessage = getGeminiResponse(patientPrompt);
+
+        String protectorPrompt = healthPromptService.createProtectorReportPrompt(responses);
+        String protectorReport = getGeminiResponse(protectorPrompt);
+
+        // TODO: protectorReport를 데이터베이스에 저장하는 코드 추가
+        System.out.println(protectorReport);
+
+        return Map.of(
+            "patientMessage", patientMessage
+        );
+    }
 
     public String getGeminiResponse(String prompt) {
         RestTemplate restTemplate = new RestTemplate();

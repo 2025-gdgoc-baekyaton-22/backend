@@ -27,7 +27,7 @@ public class User {
 
     private LocalDateTime latestUpdateTime;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Status> statusList = new ArrayList<>();
 
     private Boolean threeOrTwo; // true : 하루 3회 / false : 하루 2회
