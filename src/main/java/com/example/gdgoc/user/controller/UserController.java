@@ -5,6 +5,7 @@ import com.example.gdgoc.user.domain.User;
 import com.example.gdgoc.user.dto.*;
 import com.example.gdgoc.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +20,13 @@ import java.time.format.DateTimeFormatter;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
     private final UserService userService;
 
     @PostMapping("/signin")
     public IsSuccessDTO signIn(@RequestBody SignInRequestDTO dto) {
+        log.info(dto.getCareTakerPhone());
         return new IsSuccessDTO(userService.signIn(dto.getCareTakerPhone(), dto.getPassWord()));
     }
 
