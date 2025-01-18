@@ -31,7 +31,7 @@ public class SendMessageService {
     }
 
     // 2번 보내야 되는 로직
-    @Scheduled(cron = "0 57 4 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 13 5 * * *", zone = "Asia/Seoul")
 //    @Scheduled(cron = "0 0 8,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 20:00에 실행
     public void send2Message() {
         System.out.println("하하");
