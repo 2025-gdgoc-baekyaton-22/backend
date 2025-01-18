@@ -1,6 +1,7 @@
 package com.example.gdgoc.service;
 
 import com.example.gdgoc.user.service.UserService;
+import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -31,26 +32,45 @@ public class SendMessageService {
     }
 
     // 2번 보내야 되는 로직
-    @Scheduled(cron = "0 57 4 * * *", zone = "Asia/Seoul")
-//    @Scheduled(cron = "0 0 8,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 20:00에 실행
+//    @Scheduled(cron = "0 57 4 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 8,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 20:00에 실행
     public void send2Message() {
-        System.out.println("하하");
+        LocalTime currentTime = LocalTime.now();
+        boolean isMorning = currentTime.getHour() == 8;
+        boolean isEvening = currentTime.getHour() == 20;
+
         userService.findAllUserData().stream()
                 .filter(data -> !data.isThreeOrTwo())
                 .forEach(data -> {
-                    String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", data.getId());
-                    sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    if (isMorning) {
+                        String text = String.format("http://dollbomzigi.store/%d/1 로 접속하세요!", data.getId());
+                        sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    } else if (isEvening) {
+                        String text = String.format("http://dollbomzigi.store/%d/3 로 접속하세요!", data.getId());
+                        sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    }
                 });
     }
 
     // 3번 보내야 되는 로직
     @Scheduled(cron = "0 0 8,14,20 * * *", zone = "Asia/Seoul") // 매일 08:00, 14:00, 20:00에 실행
     public void send3Message() {
+        LocalTime currentTime = LocalTime.now();
+        int hour = currentTime.getHour();
+
         userService.findAllUserData().stream()
-                .filter(data -> !data.isThreeOrTwo())
+                .filter(data -> !data.isThreeOrTwo()) // 3번 보내는 로직으로 필터링
                 .forEach(data -> {
-                    String text = String.format("http://dollbomzigi.store/%d 로 접속하세요!", data.getId());
-                    sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    if (hour == 8) {
+                        String text = String.format("http://dollbomzigi.store/%d/1 로 접속하세요!", data.getId());
+                        sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    } else if (hour == 14) {
+                        String text = String.format("http://dollbomzigi.store/%d/2 로 접속하세요!", data.getId());
+                        sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    } else if (hour == 20) {
+                        String text = String.format("http://dollbomzigi.store/%d/3 로 접속하세요!", data.getId());
+                        sendMessage(data.getCareGiverPhone(), data.getCareTakerPhone(), text);
+                    }
                 });
     }
 
