@@ -42,6 +42,11 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/gdgoc:gdgoc-spring -f src/main/java/Dockerfile-java .
           docker push ${{ secrets.DOCKER_USERNAME }}/gdgoc:gdgoc-spring
 
+      - name: nginx docker build and push
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/gdgoc:gdgoc-nginx -f nginx/Dockerfile-nginx nginx
+          docker push ${{ secrets.DOCKER_USERNAME }}/gdgoc:gdgoc-nginx
+
       ## docker compose up
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
@@ -52,6 +57,7 @@ jobs:
           script: |
             sudo docker rm -f spring
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/gdgoc:gdgoc-spring
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/gdgoc:gdgoc-nginx
             docker-compose up -d spring
             docker image prune -f
             
