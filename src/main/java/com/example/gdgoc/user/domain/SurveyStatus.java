@@ -1,6 +1,7 @@
 package com.example.gdgoc.user.domain;
 
 public enum SurveyStatus {
+    TEMP(0),
     YES(1),
     MID(2),
     NO(3),

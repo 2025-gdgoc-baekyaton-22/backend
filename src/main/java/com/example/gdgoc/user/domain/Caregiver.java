@@ -1,15 +1,24 @@
 package com.example.gdgoc.user.domain;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Embeddable
+@Entity
+@Getter @Setter
 public class Caregiver {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String careGiverName;
     private String careGiverPhone;
     private String careGiverRelationship;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private User user;
 
     public Caregiver(){};
 
