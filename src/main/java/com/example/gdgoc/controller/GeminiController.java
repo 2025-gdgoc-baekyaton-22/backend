@@ -6,6 +6,7 @@ import com.example.gdgoc.user.domain.SurveyStatus;
 import com.example.gdgoc.user.dto.IsSuccessDTO;
 import com.example.gdgoc.user.dto.StatusRequestDTO;
 import com.example.gdgoc.user.service.UserService;
+import com.example.gdgoc.utils.SurveyDataConverter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +47,8 @@ public class GeminiController {
             throw e;
         }
 
-        //return geminiApiService.processSurvey(responses);
-        return null;
+        Map<String, String> response = SurveyDataConverter.convertSurveyData(dto);
+        return geminiApiService.processSurvey(response);
     }
 
     @PostMapping(value = "/generate", produces = MediaType.APPLICATION_JSON_VALUE)
